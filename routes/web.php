@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HallController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('wecome');
+
+Route::resource('halls', HallController::class);
