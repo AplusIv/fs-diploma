@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\HallRequest;
+use App\Http\Requests\PriceRequest;
 use App\Models\Hall;
 use Illuminate\Http\Request;
 
@@ -70,6 +71,47 @@ class HallController extends Controller
 
         $hall->save();
         return redirect()->route('halls.index')->with('success','Hall updated successfully.');
+    }
+
+    public function editPrice($id)
+    {
+        //
+        $hall = Hall::find($id);
+        return view('halls.editPrice', compact('hall'));
+    }
+    public function updatePriceForPlace(PriceRequest $request, $id)
+    {
+        // $validated = $request->safe()->only(['normal_price', 'vip_price']);
+        // $hall->fill($validated);
+        // $hall->fill($request->validated());
+        // $validated = $request->only(['normal_price', 'vip_price']);
+        // $newPrice = $validated->normal_price;
+        // $hall = Hall::find($id);
+        // $hall->normal_price = $request->normal_price;
+        // $hall->vip_price = $request->vip_price;
+        // $hall->update($request->all());
+        // $hall->save();
+
+        $hall = Hall::find($id);
+        $hall->fill($request->validated());
+        $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
+
+
+        // $hall = Hall::find($id);
+        // $validated = $request->validated();
+        // // $validated = $request->safe()->only(['normal_price', 'vip_price']);
+        // $newNormalPrice = $validated['normal_price'];
+        // $newVipPrice = $validated['vip_price'];
+        // $hall->normal_price = $newNormalPrice;
+        // $hall->vip_price = $newVipPrice;
+        // $hall->save();
+        return redirect()->route('halls.index')->with('success','prices for hall updated successfully.');
+
+        // $place->fill($request->validated());
+        // // return $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
+
+        // $place->save();
+        // return redirect()->route('places.index')->with('success','place updated successfully.');
     }
 
     /**

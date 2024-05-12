@@ -15,6 +15,8 @@
         <th>title</th>
         <th>rows</th>
         <th>places</th>
+        <th>normal_price</td>
+        <th>vip_price</td>
     </tr>
     @foreach ($halls as $hall)
     <tr>
@@ -22,6 +24,8 @@
         <td>{{ $hall->title }}</td>
         <td>{{ $hall->rows }}</td>
         <td>{{ $hall->places }}</td>
+        <td>{{ $hall->normal_price }}</td>
+        <td>{{ $hall->vip_price }}</td>
     </tr>
     @endforeach
   </table>

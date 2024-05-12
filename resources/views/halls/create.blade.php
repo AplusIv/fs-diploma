@@ -12,6 +12,22 @@
   <a class="btn btn-primary" href="{{ route('halls.index') }}"> Назад</a>
   <br>
 
+  {{-- @if ($message = Session::get('success'))
+    <div class="alert alert-success">
+        <p>{{ $message }}</p>
+    </div>
+  @endif
+
+  @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+  @endif --}}
+
   <h3>Добавление зала</h3>
     <form action="{{ route('halls.store') }}" method="post">
       @csrf
@@ -26,6 +42,16 @@
       <div class="form-group">
         <label for="places">places</label>
         <input type="number" value="8" class="form-control" name="places" id="places">
+      </div>
+      <div class="form-group">
+        <label for="normal_price">normal_price</label>
+        {{-- <input type="number" step="0.01" value="300.00" class="form-control" name="normal_price" id="normal_price"> --}}
+        <input type="number" value="300" class="form-control" name="normal_price" id="normal_price">
+      </div>
+      <div class="form-group">
+        <label for="vip_price">vip_price</label>
+        {{-- <input type="number" step="0.01" value="500.50"class="form-control" name="vip_price" id="vip_price"> --}}
+        <input type="number" value="500" class="form-control" name="vip_price" id="vip_price">
       </div>
       <br>
       <button type="submit" class="btn btn-primary">Создать новый зал</button>

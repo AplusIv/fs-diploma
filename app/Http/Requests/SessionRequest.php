@@ -25,7 +25,9 @@ class SessionRequest extends FormRequest
         return [
             // подумать над валидацией даты и времени
             'date'=> ['required'],
-            'time'=> ['required']
+            'time'=> ['required'],
+            'hall_id' => ['required', 'integer'],
+            'movie_id' => ['required', 'integer'],
         ];
     }
 }

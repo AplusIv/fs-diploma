@@ -10,7 +10,7 @@ class Session extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date', 'time'
+        'date', 'time', 'movie_id', 'hall_id' 
     ];
 
     public function movie()
@@ -21,5 +21,15 @@ class Session extends Model
     public function hall()
     {
         return $this->belongsTo(Hall::class);
+    }
+
+    public function places()
+    {
+        return $this->hasMany(Place::class);
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
     }
 }

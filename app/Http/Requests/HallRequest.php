@@ -26,6 +26,10 @@ class HallRequest extends FormRequest
             'title' => ['required', 'string'],
             'rows' => ['required', 'integer'],
             'places' => ['required', 'integer'],
+            // 'normal_price' => ['nullable', 'decimal:2'],
+            // 'vip_price' => ['nullable', 'decimal:2'],
+            'normal_price' => ['nullable', 'integer'],
+            'vip_price' => ['nullable', 'integer'],
         ];
     }
 }
