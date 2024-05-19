@@ -22,6 +22,7 @@ return new class extends Migration
             // $table->integer('vip_price')->nullable();
             $table->float('normal_price', 8, 2)->nullable();
             $table->float('vip_price', 8, 2)->nullable();
+            $table->json('configuration')->nullable();
             $table->timestamps();
             // name, rows, places,
         });

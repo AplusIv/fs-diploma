@@ -4,15 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class HallRequest extends FormRequest
+class OrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        // return false; // true
-        return true; // true
+        return true;
     }
 
     /**
@@ -23,13 +22,7 @@ class HallRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
-            'rows' => ['required', 'integer'],
-            'places' => ['required', 'integer'],
-            'normal_price' => ['nullable', 'decimal:2'],
-            'vip_price' => ['nullable', 'decimal:2'],
-            // 'normal_price' => ['nullable', 'integer'],
-            // 'vip_price' => ['nullable', 'integer'],
+            'is_paid' => ['boolean']
         ];
     }
 }

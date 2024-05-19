@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('place_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('session_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('order_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->enum('status', ['booked', 'paid']);
             $table->timestamps();
         });
     }

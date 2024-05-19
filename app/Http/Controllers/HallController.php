@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\HallRequest;
 use App\Http\Requests\PriceRequest;
 use App\Models\Hall;
+use App\Models\Place;
 use Illuminate\Http\Request;
 
 
@@ -96,6 +97,16 @@ class HallController extends Controller
         $hall->fill($request->validated());
         $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
 
+        // изменение цен в place
+        $places = Place::where('hall_id', $id)->get(); //
+        foreach ($places as $place) {
+            if ($place->type === 'vip') {
+                $place->price = $place->hall->vip_price;
+            } elseif ($place->type === 'normal') {
+                $place->price = $place->hall->normal_price;
+            } else null;
+            $place->save();
+        }
 
         // $hall = Hall::find($id);
         // $validated = $request->validated();

@@ -10,8 +10,13 @@ class Place extends Model
     use HasFactory;
 
     protected $fillable = [
-        'hall_id', 'session_id', 'row', 'place', 'type', 'is_free'
+        'hall_id', 'session_id', 'row', 'place', 'type', 'is_free', 'is_selected'
     ];
+
+    // public function setIsFreeAttribute($value)
+    // {
+    //     $this->attributes['is_free'] = is_null($value) ? true : $value;
+    // }
 
     public function hall()
     {
@@ -25,6 +30,7 @@ class Place extends Model
 
     public function ticket() // Не всегда есть билет на место...
     {
-        return $this->belongsTo(Ticket::class);
+        // return $this->belongsTo(Ticket::class);
+        return $this->hasOne(Ticket::class);
     }
 }

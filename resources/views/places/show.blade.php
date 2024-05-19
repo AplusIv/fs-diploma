@@ -19,24 +19,28 @@
       <th>hall title</th>
       <th>session_id</th>
       <th>session time</th>
+      <th>ticket_id</th>
     </tr>
     <tr>
       <td>{{ $place->id }}</td>
-        <td>{{ $place->row }}</td>
-        <td>{{ $place->place }}</td>
-        <td>{{ $place->type }}</td>
-        <td>{{ $place->is_free }}</td>
-        @if ($place->type === 'vip') 
-          <td>{{ $place->hall->vip_price }}</td>  
-        @elseif ($place->type === 'normal')   
-          <td>{{ $place->hall->normal_price }}</td>      
-            @else
-              <td>place is not free</td>  
-        @endif
-        <td>{{ $place->hall_id }}</td>
-        <td>{{ $place->hall->title}}</td>
-        <td>{{ $place->session_id }}</td>
-        <td>{{ $place->session->time}}</td>
+      <td>{{ $place->row }}</td>
+      <td>{{ $place->place }}</td>
+      <td>{{ $place->type }}</td>
+      <td>{{ $place->is_free }}</td>
+      {{-- <td>{{ $place->price }}</td> --}}
+      {{-- @if ($place->type === 'vip') 
+        <td>{{ $place->hall->vip_price }}</td>  
+      @elseif ($place->type === 'normal')   
+        <td>{{ $place->hall->normal_price }}</td>      
+          @else
+            <td>place is not allowed</td>  
+      @endif --}}
+      <td>{{ $place->price }}</td>
+      <td>{{ $place->hall_id }}</td>
+      <td>{{ $place->hall->title}}</td>
+      <td>{{ $place->session_id }}</td>
+      <td>{{ $place->session->time}}</td>
+      {{-- <td>{{ $place->ticket->session_id }}</td> --}}
     </tr>
   </table>
 </body>

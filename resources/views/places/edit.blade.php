@@ -40,10 +40,15 @@
         <input type="text" value={{ $place->type }} class="form-control" id="type" name="type">
       </div>
       <div class="form-group">
+        <label for="is_selected">is_selected</label>
+        <input type="hidden" id="is_selected" name="is_selected" value="no selected">
+        <input type="checkbox" id="is_selected" name="is_selected" value="selected">
+      </div>
+      {{-- <div class="form-group">
         <label for="is_free">is_free</label>
         <input type="hidden" id="is_free" name="is_free" value="occupied">
         <input type="checkbox" id="is_free" name="is_free" value="free" checked>
-      </div>
+      </div> --}}
       {{-- <div class="form-group">
         <label for="price">price</label>
         <input type="number" step="0.01" value="300.50" class="form-control" id="price" name="price">

@@ -45,13 +45,13 @@
       </div>
       <div class="form-group">
         <label for="normal_price">normal_price</label>
-        {{-- <input type="number" step="0.01" value="300.00" class="form-control" name="normal_price" id="normal_price"> --}}
-        <input type="number" value="300" class="form-control" name="normal_price" id="normal_price">
+        <input type="number" step="0.01" value="300.00" class="form-control" name="normal_price" id="normal_price">
+        {{-- <input type="number" value="300" class="form-control" name="normal_price" id="normal_price"> --}}
       </div>
       <div class="form-group">
         <label for="vip_price">vip_price</label>
-        {{-- <input type="number" step="0.01" value="500.50"class="form-control" name="vip_price" id="vip_price"> --}}
-        <input type="number" value="500" class="form-control" name="vip_price" id="vip_price">
+        <input type="number" step="0.01" value="500.50"class="form-control" name="vip_price" id="vip_price">
+        {{-- <input type="number" value="500" class="form-control" name="vip_price" id="vip_price"> --}}
       </div>
       <br>
       <button type="submit" class="btn btn-primary">Создать новый зал</button>
