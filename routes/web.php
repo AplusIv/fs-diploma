@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-})->name('wecome');
+})->name('welcome');
 
 Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::group(['middleware' => 'admin'], function() {
