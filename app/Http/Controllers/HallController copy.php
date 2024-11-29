@@ -6,7 +6,6 @@ use App\Http\Requests\HallRequest;
 use App\Http\Requests\PriceRequest;
 use App\Models\Hall;
 use App\Models\Place;
-use Exception;
 use Illuminate\Http\Request;
 
 
@@ -29,7 +28,7 @@ class HallController extends Controller
     public function create()
     {
         //
-        // return view('halls.create');
+        return view('halls.create');
     }
 
     /**
@@ -38,14 +37,8 @@ class HallController extends Controller
     public function store(HallRequest $request)
     {
         // return Hall::created($request->validated()); // уточнить created
-        $hall = Hall::create($request->validated());
-        // return $hall->with('success', 'Hall created successfully.');
-
-        // return $hall; // работает, выводит объект
-        return response()->json($hall, 201);
-
-        
-        // return redirect()->route('halls.index')->with('success','Hall created successfully.');
+        Hall::create($request->validated());
+        return redirect()->route('halls.index')->with('success','Hall created successfully.');
 
     }
 
@@ -54,16 +47,9 @@ class HallController extends Controller
      */
     public function show($id)
     {
-        // $hall = Hall::find($id);
-        // return view('halls.show', compact('hall'));
+        $hall = Hall::find($id);
+        return view('halls.show', compact('hall'));
         // return Hall::findOrFail($id);
-        try {
-            $hall = Hall::findOrFail($id);
-            return $hall;
-        } catch (Exception $e) {
-            // dd($e->getMessage());
-            return $e->getMessage();
-        }
     }
 
     /**
@@ -72,8 +58,8 @@ class HallController extends Controller
     public function edit($id)
     {
         //
-        // $hall = Hall::find($id);
-        // return view('halls.edit', compact('hall'));
+        $hall = Hall::find($id);
+        return view('halls.edit', compact('hall'));
     }
 
     /**
@@ -85,8 +71,7 @@ class HallController extends Controller
         // return $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
 
         $hall->save();
-        return response()->json("Hall with id: $hall->id updated", 200);
-        // return redirect()->route('halls.index')->with('success','Hall updated successfully.');
+        return redirect()->route('halls.index')->with('success','Hall updated successfully.');
     }
 
     public function editPrice($id)
@@ -131,7 +116,7 @@ class HallController extends Controller
         // $hall->normal_price = $newNormalPrice;
         // $hall->vip_price = $newVipPrice;
         // $hall->save();
-        return redirect()->route('halls.index')->with('success', 'prices for hall updated successfully.');
+        return redirect()->route('halls.index')->with('success','prices for hall updated successfully.');
 
         // $place->fill($request->validated());
         // // return $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
@@ -147,10 +132,9 @@ class HallController extends Controller
     {
         // проверка возможности удаления
         if ($hall->delete()) {
-            return response()->json(null, 204);
             // return response(null, 404);
             // return response()->json(null, 204);
-            // return redirect()->route('halls.index')->with('success','Hall deleted successfully.');
+            return redirect()->route('halls.index')->with('success','Hall deleted successfully.');
         }
         return null; // если запись не найдена
     }

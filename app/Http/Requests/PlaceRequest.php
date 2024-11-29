@@ -25,18 +25,20 @@ class PlaceRequest extends FormRequest
     {
         return [
             'hall_id' => ['required', 'integer'],
-            'session_id' => ['required', 'integer'],
+            // 'session_id' => ['required', 'integer'],
 
             // 'ticket_id' => ['nullable', 'integer'],
 
             'row' => ['required', 'integer'],
             'place' => ['required', 'integer'],
             // 'type' => ['required', 'string'],
-            'type' => ['required', Rule::in(['vip', 'normal', 'not allowed'])],
+            // 'type' => ['required', Rule::in(['vip', 'normal', 'not allowed'])],
+            'type' => ['required', Rule::in(['vip', 'standart', 'disabled'])],
+
             
             // 'is_free' => ['required'], // boolean не проходит валидацию
-            'is_free' => ['nullable', 'boolean'], // boolean не проходит валидацию
-            'is_selected' => ['required'],
+            // 'is_free' => ['nullable', 'boolean'], // boolean не проходит валидацию
+            'is_selected' => ['required', 'boolean'],
             
             // 'price' => ['nullable', 'decimal:2'],
         ];

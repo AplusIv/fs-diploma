@@ -21,6 +21,11 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                // доработка при повторной авторизации (выдать ответ с ошибкой, что уже авторизованы, вместо редиректа на '/' (home))
+                if ($request->expectsJson()) {
+                    return response()->json(['message' => __('Already Authenticated')], 403);
+                }
+                
                 return redirect(RouteServiceProvider::HOME);
             }
         }

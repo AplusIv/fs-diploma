@@ -7,8 +7,6 @@ use App\Http\Requests\SessionRequest;
 use App\Models\Hall;
 use App\Models\Movie;
 use App\Models\Session;
-use Exception;
-
 // use Illuminate\Http\Request;
 
 class SessionController extends Controller
@@ -19,8 +17,8 @@ class SessionController extends Controller
     public function index()
     {
         $sessions = Session::all();
-        // return view('sessions.index', compact('sessions'));
-        return Session::all();
+        return view('sessions.index', compact('sessions'));
+        // return Hall::all();
     }
 
     /**
@@ -33,11 +31,11 @@ class SessionController extends Controller
         // return view('courses.test', ['option' => $option]);
         // $halls = Hall::all();
         // $movies = Movie::all();
-        // $hall = Hall::firstOrFail();
-        // $movie = Movie::firstOrFail();
+        $hall = Hall::firstOrFail();
+        $movie = Movie::firstOrFail();
 
 
-        // return view('sessions.create', compact('hall', 'movie'));
+        return view('sessions.create', compact('hall', 'movie'));
     }
 
     /**
@@ -46,9 +44,9 @@ class SessionController extends Controller
     public function store(SessionRequest $request)
     {
         // return Hall::created($request->validated()); // уточнить created
-        $session = Session::create($request->validated());
-        // return redirect()->route('sessions.index')->with('success','Session created successfully.');
-        return response()->json($session, 201);
+        Session::create($request->validated());
+        return redirect()->route('sessions.index')->with('success','Session created successfully.');
+
     }
 
     /**
@@ -56,16 +54,9 @@ class SessionController extends Controller
      */
     public function show($id)
     {
-        // $session = Session::find($id);
-        // return view('sessions.show', compact('session'));
+        $session = Session::find($id);
+        return view('sessions.show', compact('session'));
         // return Hall::findOrFail($id);
-        try {
-            $session = Session::findOrFail($id);
-            return $session;
-        } catch (Exception $e) {
-            // dd($e->getMessage());
-            return $e->getMessage();
-        }
     }
 
     /**
@@ -73,8 +64,8 @@ class SessionController extends Controller
      */
     public function edit($id)
     {
-        // $session = Session::find($id);
-        // return view('sessions.edit', compact('session'));
+        $session = Session::find($id);
+        return view('sessions.edit', compact('session'));
     }
 
     /**
@@ -86,22 +77,7 @@ class SessionController extends Controller
         // return $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
 
         $session->save();
-        return response()->json("Session with id: $session->id updated", 200);
-
-        // return redirect()->route('sessions.index')->with('success','session updated successfully.');
-
-        // try {
-        //     // $session = Session::findOrFail($id);
-        //     // return $session;
-        //     $session->fill($request->validated());
-        //     // return $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
-    
-        //     $session->save(); // вернёт либо истину, либо ложь при попытке обновить значения
-        //     // return response()->json("Session with id: $session->id updated", 200);    
-        // } catch (Exception $e) {
-        //     // dd($e->getMessage());
-        //     return $e->getMessage();
-        // }
+        return redirect()->route('sessions.index')->with('success','session updated successfully.');
     }
 
     /**
@@ -111,10 +87,9 @@ class SessionController extends Controller
     {
         // проверка возможности удаления
         if ($session->delete()) {
-            return response()->json(null, 204);
             // return response(null, 404);
             // return response()->json(null, 204);
-            // return redirect()->route('sessions.index')->with('success','session deleted successfully.');
+            return redirect()->route('sessions.index')->with('success','session deleted successfully.');
         }
         return null; // если запись не найдена
     }

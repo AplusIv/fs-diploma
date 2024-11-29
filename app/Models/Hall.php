@@ -10,8 +10,11 @@ class Hall extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'rows', 'places', 'normal_price', 'vip_price', 'configuration'
+        'title', 'rows', 'places', 'normal_price', 'vip_price'
     ];
+    // protected $fillable = [
+    //     'title', 'rows', 'places', 'normal_price', 'vip_price', 'configuration'
+    // ];
 
     public function sessions()
     {

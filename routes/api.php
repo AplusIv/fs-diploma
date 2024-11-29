@@ -3,6 +3,9 @@
 use App\Http\Controllers\ApiTokenController;
 use App\Http\Controllers\HallController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +23,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+// Route::middleware('auth:sanctum')->get('/halls', 'App\Http\Controllers\HallController@index');
+
+// api resourse with middleware
+Route::apiResource('halls', HallController::class)->middleware('auth:sanctum');
+Route::apiResource('movies', MovieController::class)->middleware('auth:sanctum');
+Route::apiResource('sessions', SessionController::class)->middleware('auth:sanctum');
+Route::apiResource('places', PlaceController::class)->middleware('auth:sanctum');
+
 
 
 // тест Book

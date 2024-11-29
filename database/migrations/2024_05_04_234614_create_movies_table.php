@@ -17,7 +17,8 @@ return new class extends Migration
             // $table->foreignId('hall_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('title');
             $table->text('description');
-            $table->string('duration'); // возможно нужно выбрать временной тип
+            // $table->string('duration'); // возможно нужно выбрать временной тип
+            $table->integer('duration'); // возможно нужно выбрать временной тип
             $table->string('country');
             $table->timestamps();
         });

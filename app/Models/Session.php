@@ -23,10 +23,10 @@ class Session extends Model
         return $this->belongsTo(Hall::class);
     }
 
-    public function places()
-    {
-        return $this->hasMany(Place::class);
-    }
+    // public function places()
+    // {
+    //     return $this->hasMany(Place::class);
+    // }
 
     public function tickets()
     {

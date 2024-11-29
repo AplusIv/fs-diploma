@@ -7,7 +7,6 @@ use App\Http\Requests\TypeRequest;
 use App\Models\Hall;
 use App\Models\Place;
 use App\Models\Session;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -38,11 +37,8 @@ class PlaceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PlaceRequest $request)
+    public function store(Request $request)
     {
-        $place = Place::create($request->validated());
-        // return redirect()->route('movies.index')->with('success','movie created successfully.');
-        return response()->json($place, 201);
 
         // Вернуть ВАЛИДАЦИЮ
         
@@ -67,33 +63,33 @@ class PlaceController extends Controller
         // $validated = $validator->validate();
 
         // $place = Place::create($validated);
-        // $place = Place::create($request->all());
-        // // $place->setIsFreeAttribute();
-        // $place->setAttribute('is_free', true); // без валидации
-        // $place->setAttribute('is_selected', false); // без валидации
+        $place = Place::create($request->all());
+        // $place->setIsFreeAttribute();
+        $place->setAttribute('is_free', true); // без валидации
+        $place->setAttribute('is_selected', false); // без валидации
 
-        // // Проверка типа билета
-        // if ($place->type === 'vip') {
-        //     $place->price = $place->hall->vip_price;
-        // } elseif ($place->type === 'normal') {
-        //     $place->price = $place->hall->normal_price;
-        // } else null; // return redirect()->back();
+        // Проверка типа билета
+        if ($place->type === 'vip') {
+            $place->price = $place->hall->vip_price;
+        } elseif ($place->type === 'normal') {
+            $place->price = $place->hall->normal_price;
+        } else null; // return redirect()->back();
 
 
-        // // Ряд места должен быть не больше ряда зала
-        // if ($place->row > $place->hall->rows) {
-        //     return redirect()->back();
-        // }
+        // Ряд места должен быть не больше ряда зала
+        if ($place->row > $place->hall->rows) {
+            return redirect()->back();
+        }
 
-        // // Место не должно быть больше мест в ряду зала
-        // if ($place->place > $place->hall->places) {
-        //     return redirect()->back();
-        //   }
+        // Место не должно быть больше мест в ряду зала
+        if ($place->place > $place->hall->places) {
+            return redirect()->back();
+          }
         
-        // $place->save();
+        $place->save();
 
-        // // dd($request->is_free);
-        // return redirect()->route('places.index')->with('success','places created successfully.');    
+        // dd($request->is_free);
+        return redirect()->route('places.index')->with('success','places created successfully.');    
 
         
         // Place::create($request->validated());
@@ -105,16 +101,9 @@ class PlaceController extends Controller
      */
     public function show($id)
     {
-        // $place = Place::find($id);
-        // return view('places.show', compact('place'));
+        $place = Place::find($id);
+        return view('places.show', compact('place'));
         // return Hall::findOrFail($id);
-        try {
-            $place = Place::findOrFail($id);
-            return $place;
-        } catch (Exception $e) {
-            // dd($e->getMessage());
-            return $e->getMessage();
-        }
     }
 
     /**
@@ -122,8 +111,8 @@ class PlaceController extends Controller
      */
     public function edit($id)
     {
-        // $place = Place::find($id);
-        // return view('places.edit', compact('place'));
+        $place = Place::find($id);
+        return view('places.edit', compact('place'));
     }
 
     /**
@@ -134,9 +123,7 @@ class PlaceController extends Controller
         $place->fill($request->validated());
         $place->save();
         // dd($place->is_selected);
-        // return redirect()->route('places.index')->with('success','place updated successfully.');
-        return response()->json("Place with id: $place->id updated", 200);
-
+        return redirect()->route('places.index')->with('success','place updated successfully.');
     }
 
     public function editType($id)
@@ -204,13 +191,12 @@ class PlaceController extends Controller
      */
     public function destroy(Place $place)
     {
+        // Нужен ли этот метод?
         // проверка возможности удаления
         if ($place->delete()) {
-            return response()->json(null, 204);
-
             // return response(null, 404);
             // return response()->json(null, 204);
-            // return redirect()->route('places.index')->with('success','place deleted successfully.');
+            return redirect()->route('places.index')->with('success','place deleted successfully.');
         }
         return null; // если запись не найдена
     }
