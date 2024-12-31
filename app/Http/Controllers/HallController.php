@@ -69,6 +69,24 @@ class HallController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
+     public function getPlacesByHall($id)
+     {
+         // $hall = Hall::find($id);
+         // return view('halls.show', compact('hall'));
+         // return Hall::findOrFail($id);
+         try {
+             $places = Hall::findOrFail($id)->placesList;
+             return $places;
+         } catch (Exception $e) {
+             // dd($e->getMessage());
+             return $e->getMessage();
+         }
+     }
+ 
+
+
+
     public function edit($id)
     {
         //

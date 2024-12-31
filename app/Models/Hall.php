@@ -21,7 +21,7 @@ class Hall extends Model
         return $this->hasMany(Session::class);
     }
 
-    public function places()
+    public function placesList()
     {
         return $this->hasMany(Place::class);
     }

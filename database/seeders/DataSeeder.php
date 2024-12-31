@@ -16,6 +16,10 @@ class DataSeeder extends Seeder
      */
     public function run(): void
     {
+        // Hall::truncate(); // удалить предыдущие записи перед созданием новых
+        // Movie::truncate(); // удалить предыдущие записи перед созданием новых
+        // Session::truncate(); // удалить предыдущие записи перед созданием новых
+
         $hall = Hall::factory()->create();
         $movie = Movie::factory()->create();
         Session::factory()->count(4)->for($hall)->for($movie)->create();
@@ -38,18 +42,6 @@ class DataSeeder extends Seeder
                 $p = 1;
             }
         }
-        // $hall = Hall::factory()->make();
-        // $movie = Movie::factory()->make();
-        // // Session::factory()->count(3)->for($hall)->for($movie)->make();
-        // Session::factory()
-        //     ->count(3)
-        //     ->state([
-        //         'movie_id' => $movie->id,
-        //         'hall_id' => $hall->id
-        //     ])->make();
-
-
-        // $hall2 = Hall::factory()->has(Session::factory()->for($movie))->make();
 
     }
 }
