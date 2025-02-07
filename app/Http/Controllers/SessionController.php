@@ -77,6 +77,21 @@ class SessionController extends Controller
         // return view('sessions.edit', compact('session'));
     }
 
+    public function getSessionsByDate($date)
+    {
+        // $hall = Hall::find($id);
+        // return view('halls.show', compact('hall'));
+        // return Hall::findOrFail($id);
+        try {
+            $sessions = Session::where('date', $date)->get();
+            // $places = Hall::findOrFail($id)->placesList;
+            return $sessions;
+        } catch (Exception $e) {
+            // dd($e->getMessage());
+            return $e->getMessage();
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -95,7 +110,7 @@ class SessionController extends Controller
         //     // return $session;
         //     $session->fill($request->validated());
         //     // return $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
-    
+
         //     $session->save(); // вернёт либо истину, либо ложь при попытке обновить значения
         //     // return response()->json("Session with id: $session->id updated", 200);    
         // } catch (Exception $e) {

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->float('sum', 8, 2);
+            $table->float('sum', 8, 2)->nullable();
             $table->boolean('is_paid');
             $table->timestamps();
         });

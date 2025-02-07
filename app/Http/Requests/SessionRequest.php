@@ -24,7 +24,8 @@ class SessionRequest extends FormRequest
     {
         return [
             // подумать над валидацией даты и времени
-            'date'=> ['required', 'date_format:d.m.Y'],
+            'date'=> ['required', 'date_format:Y-m-d'],
+            // 'date'=> ['required', 'date_format:d.m.Y'],
             'time'=> ['required', 'date_format:H:i'],
             'hall_id' => ['required', 'integer'],
             'movie_id' => ['required', 'integer'],

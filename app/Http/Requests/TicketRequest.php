@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TicketRequest extends FormRequest
 {
@@ -22,8 +23,10 @@ class TicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'place_id' => ['required', 'integer'],
-            'session_id' => ['required', 'integer'],
+            '*.place_id' => ['required', 'integer'], // *. валидация элемента массива
+            '*.session_id' => ['required', 'integer'], // валидация элемента массива
+            // order_id
+            '*.status' => ['required', Rule::in(['not_selected', 'booked', 'paid'])], // валидация элемента массива
         ];
     }
 }
