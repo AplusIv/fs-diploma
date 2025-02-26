@@ -7,7 +7,6 @@ use App\Http\Requests\TypeRequest;
 use App\Models\Hall;
 use App\Models\Place;
 use App\Models\Session;
-use App\Services\PlaceService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,8 +14,6 @@ use Illuminate\Validation\Rule;
 
 class PlaceController extends Controller
 {
-    // PlaceService добавляется в контейнер контроллера, либо передаётся в виде переменной в конкретный метод
-    public function __construct(private PlaceService $placeService) {}
     /**
      * Display a listing of the resource.
      */
@@ -141,12 +138,6 @@ class PlaceController extends Controller
         return response()->json("Place with id: $place->id updated", 200);
 
     }
-
-    // public function updateNewHallConfiguration(Hall $hall)
-    // {
-    //     $this->placeService->deletePlacesOfHall($hall);
-    //     $this->placeService->store($hall);
-    // }
 
     public function editType($id)
     {

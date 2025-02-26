@@ -48,6 +48,17 @@ Route::apiResource('orders', OrderController::class)->middleware('auth:sanctum')
 // отдельные пути
 Route::middleware('auth:sanctum')->get('/halls/{hall}/places', [HallController::class, 'getPlacesByHall']);
 
+// создание и заполнение новых мест в зале
+Route::middleware('auth:sanctum')->post('/halls/{hall}/places', [HallController::class, 'storePlaces']);
+
+// удаление всех мест в зале
+Route::middleware('auth:sanctum')->delete('/halls/{hall}/places', [HallController::class, 'deletePlaces']);
+
+
+// обновление типа мест для зала
+Route::middleware('auth:sanctum')->put('/halls/{hall}/places', [HallController::class, 'updateHallPlaces']);
+
+
 // получение сеансов на конкретную дату
 Route::middleware('auth:sanctum')->get('/sessions/date/{date}', [SessionController::class, 'getSessionsByDate']);
 

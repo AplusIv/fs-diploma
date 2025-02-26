@@ -3,20 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\HallRequest;
-use App\Http\Requests\PlaceRequest;
-use App\Http\Requests\PlacesArrayRequest;
 use App\Http\Requests\PriceRequest;
 use App\Models\Hall;
 use App\Models\Place;
-use App\Services\PlaceService;
 use Exception;
 use Illuminate\Http\Request;
 
 
 class HallController extends Controller
 {
-    // PlaceService добавляется в контейнер контроллера, либо передаётся в виде переменной в конкретный метод
-    public function __construct(private PlaceService $placeService) {}
     /**
      * Display a listing of the resource.
      */
@@ -46,21 +41,12 @@ class HallController extends Controller
         $hall = Hall::create($request->validated());
         // return $hall->with('success', 'Hall created successfully.');
 
-        // Создание и добавление мест для нового зала
-        $placesData = $this->placeService->store($hall);
-
-        // return response()->json($hall, 201);
-        return response()->json(['new hall' => $hall, 'new places' => $placesData], 201);
-
+        // return $hall; // работает, выводит объект
+        return response()->json($hall, 201);
 
         
         // return redirect()->route('halls.index')->with('success','Hall created successfully.');
-    }
 
-    public function storePlaces(Hall $hall)
-    {
-        $placesData = $this->placeService->store($hall);
-        return response()->json(['new places' => $placesData], 201);
     }
 
     /**
@@ -120,16 +106,9 @@ class HallController extends Controller
         return response()->json("Hall with id: $hall->id updated", 200);
         // return redirect()->route('halls.index')->with('success','Hall updated successfully.');
     }
-    /**
-     * Обновление типа мест в конкретном зале
-     */
-    public function updateHallPlaces(PlacesArrayRequest $request, int $id) 
-    {
-        $responseData = $this->placeService->updatePlacesByHallId($request->validated(), $id);
-        // return response()->json("Places with hall_id: $id updated", 200);
-        return response()->json(['updated places' => $responseData], 200);
 
-    }
+    public function updateHallPlaces() 
+    {}
 
     public function editPrice($id)
     {
@@ -180,12 +159,6 @@ class HallController extends Controller
 
         // $place->save();
         // return redirect()->route('places.index')->with('success','place updated successfully.');
-    }
-
-    public function deletePlaces(Hall $hall)
-    {
-        $count = $this->placeService->deletePlacesOfHall($hall);
-        return response()->json(['deleted places count' => $count], 204);        
     }
 
     /**
