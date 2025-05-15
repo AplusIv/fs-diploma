@@ -25,6 +25,9 @@ class TicketService
   public function getTicketsByOrder(int $id)
   {
     try {
+      if (!$id) {
+        throw new Exception("Order id is not a number", 404);
+      }
       $tickets = Ticket::where('order_id', $id)->get();
       // $places = Hall::findOrFail($id)->placesList;
       return $tickets;
@@ -75,7 +78,8 @@ class TicketService
         return $sum + $currentPrice;
       }, 0);
       
-      return $totalSum;
+      // return $totalSum;
+      return round($totalSum, 2);
     } catch (Exception $e) {
       return $e->getMessage();
     }    

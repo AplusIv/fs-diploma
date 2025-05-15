@@ -43,7 +43,6 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
     });
 });
-// Route::resource('halls', HallController::class);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

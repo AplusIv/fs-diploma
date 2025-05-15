@@ -131,6 +131,9 @@ class TicketController extends Controller
     public function getTicketsByOrderId($id)
     {
         try {
+            if (!$id) {
+                throw new Exception("Order id is not a true value", 404);
+            }
             $tickets = Ticket::where('order_id', $id)->get();
             return $tickets;
         } catch (Exception $e) {

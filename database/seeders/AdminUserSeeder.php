@@ -15,6 +15,8 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         User::truncate(); // удалить предыдущие записи перед созданием новых пользователей
+        
+        // 1)
         User::create([
             'name' => 'admin',
             'email' => 'admin2@gmail.com',
@@ -23,5 +25,16 @@ class AdminUserSeeder extends Seeder
             'password' => Hash::make('123456789'),
             'is_admin' => true,
         ]);
+
+        // 2)
+        User::create([
+            'name' => 'admin',
+            'email' => 'admin@gmail.com',
+            // 'email' => 'admin@gmail.com',
+            // 'password' => 12345678,
+            'password' => Hash::make('123456789'),
+            'is_admin' => true,
+        ]);
+
     }
 }

@@ -27,23 +27,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-// Route::middleware('auth:sanctum')->get('/halls', 'App\Http\Controllers\HallController@index');
-
-// api resourse with middleware
-Route::apiResource('halls', HallController::class)->middleware('auth:sanctum');
-Route::apiResource('movies', MovieController::class)->middleware('auth:sanctum');
-Route::apiResource('sessions', SessionController::class)->middleware('auth:sanctum');
-Route::apiResource('places', PlaceController::class)->middleware('auth:sanctum');
-Route::apiResource('tickets', TicketController::class)->middleware('auth:sanctum');
-Route::apiResource('orders', OrderController::class)->middleware('auth:sanctum');
-
-// // api resourse without authorization
-// Route::apiResource('halls', HallController::class);
-// Route::apiResource('movies', MovieController::class);
-// Route::apiResource('sessions', SessionController::class);
-// Route::apiResource('places', PlaceController::class);
-// Route::apiResource('tickets', TicketController::class);
-// Route::apiResource('orders', OrderController::class);
+// Home page
+// api resourse with 'auth:sanctum' and 'admin' (class CheckIsAdmin)  middleware
+Route::apiResource('halls', HallController::class)->middleware(['auth:sanctum', 'admin']);
+Route::apiResource('movies', MovieController::class)->middleware(['auth:sanctum', 'admin']);
+Route::apiResource('sessions', SessionController::class)->middleware(['auth:sanctum', 'admin']);
+Route::apiResource('places', PlaceController::class)->middleware(['auth:sanctum', 'admin']);
+// Route::apiResource('tickets', TicketController::class)->middleware('auth:sanctum');
+// Route::apiResource('orders', OrderController::class)->middleware('auth:sanctum');
 
 // отдельные пути
 Route::middleware('auth:sanctum')->get('/halls/{hall}/places', [HallController::class, 'getPlacesByHall']);
@@ -59,35 +50,59 @@ Route::middleware('auth:sanctum')->delete('/halls/{hall}/places', [HallControlle
 Route::middleware('auth:sanctum')->put('/halls/{hall}/places', [HallController::class, 'updateHallPlaces']);
 
 
-// получение сеансов на конкретную дату
-Route::middleware('auth:sanctum')->get('/sessions/date/{date}', [SessionController::class, 'getSessionsByDate']);
+// Client page
+Route::prefix('guest')->group(function () {
+    Route::apiResource('tickets', TicketController::class);
+    Route::apiResource('orders', OrderController::class);
 
-// // получение сеансов на конкретную дату (без авторизации)
+    // получение всех залов/фильмов/сеансов/зрительских мест
+    Route::get('/halls', [HallController::class, 'index']);
+    Route::get('/movies', [MovieController::class, 'index']);
+    Route::get('/sessions', [SessionController::class, 'index']);
+    Route::get('/places', [PlaceController::class, 'index']);
+
+    // получение сеансов на конкретную дату
+    Route::get('/sessions/date/{date}', [SessionController::class, 'getSessionsByDate']);
+    // получение билетов по ID конкретного заказа
+    Route::get('/tickets/order/{id}', [TicketController::class, 'getTicketsByOrderId']);
+});
+
+
+// api resourse without authorization
+// Route::apiResource('halls', HallController::class);
+// Route::apiResource('movies', MovieController::class);
+// Route::apiResource('sessions', SessionController::class);
+// Route::apiResource('places', PlaceController::class);
+
+// Route::apiResource('tickets', TicketController::class);
+// Route::apiResource('orders', OrderController::class);
+
+/* // client requests (not protected)
+Route::get('/halls', [HallController::class, 'index']);
+Route::get('/movies', [MovieController::class, 'index']);
+Route::get('/sessions', [SessionController::class, 'index']);
+Route::get('/places', [PlaceController::class, 'index']); */
+
+// client requests (not protected)
+// Route::get('/halls', [HallController::class, 'index']);
+// Route::get('/movies', [MovieController::class, 'index']);
+// Route::get('/sessions', [SessionController::class, 'index']);
+// Route::get('/places', [PlaceController::class, 'index']);
+
+
+
+
+// Резервные пути (до гостевых путей):
+// 
+// получение сеансов на конкретную дату
+// Route::middleware('auth:sanctum')->get('/sessions/date/{date}', [SessionController::class, 'getSessionsByDate']);
+
+// получение сеансов на конкретную дату (без авторизации)
 // Route::get('/sessions/date/{date}', [SessionController::class, 'getSessionsByDate']);
 
 
 // получение билетов по ID конкретного заказа
-Route::middleware('auth:sanctum')->get('/tickets/order/{id}', [TicketController::class, 'getTicketsByOrderId']);
+// Route::middleware('auth:sanctum')->get('/tickets/order/{id}', [TicketController::class, 'getTicketsByOrderId']);
 
-// // получение билетов по ID конкретного заказа (без авторизации)
+// получение билетов по ID конкретного заказа (без авторизации)
 // Route::get('/tickets/order/{id}', [TicketController::class, 'getTicketsByOrderId']);
-
-
-// тест Book
-// Route::middleware('auth:sanctum')->get('/book', 'App\Http\Controllers\BookController@index');
-// Route::get('/book', 'App\Http\Controllers\BookController@index');
-
-// or
-// Route::get('/book', [BookController::class, 'index']);
-
-
-// Route::resource('halls', HallController::class);
-
-// Route::post('/tokens/create', [ApiTokenController::class, 'createToken']);
-
-
-// Route::group(['middleware' => 'auth:sanctum'], function() {
-//     Route::group(['middleware' => 'admin'], function() {
-//         Route::resource('halls', HallController::class);
-//     });
-// });

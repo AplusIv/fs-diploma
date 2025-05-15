@@ -8,6 +8,11 @@ use App\Models\Hall;
 use App\Models\Movie;
 use App\Models\Session;
 use Exception;
+use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Validator;
+
+use function PHPUnit\Framework\throwException;
 
 // use Illuminate\Http\Request;
 
@@ -77,18 +82,56 @@ class SessionController extends Controller
         // return view('sessions.edit', compact('session'));
     }
 
-    public function getSessionsByDate($date)
+    public function getSessionsByDate(Request $request)
     {
         // $hall = Hall::find($id);
         // return view('halls.show', compact('hall'));
         // return Hall::findOrFail($id);
         try {
-            $sessions = Session::where('date', $date)->get();
+            $today = date('Y-m-d');
+            $validator = Validator::make($request->route()->parameters(), [
+                'date' => ['required', 'date_format:Y-m-d', "after_or_equal:{$today}"],
+            ]);
+
+        //     $validated = Validator::make(array_merge($request->all(), $request->route()->parameters()), [
+        //         'date' => ['required', 'date_format:Y-m-d', "after_or_equal:{$today}"],
+        // ])->validated();
+
+            // $validator = Validator::make($date), [
+            //     'date'=> ['required', 'date_format:Y-m-d', "after_or_equal:{$today}"]
+            // ]);
+    
+            if ($validator->fails()) {
+
+                // return $validator->errors();
+                return response()->json($validator->errors(), 400);
+
+                // throw new Exception('given date is not correct');
+                // return redirect('/post/create')
+                //             ->withErrors($validator)
+                //             ->withInput();
+            }
+    
+            // Получить проверенные данные...
+            $validated = $validator->validated();
+
+            // if ($date) {
+            //     $sessions = Session::where('date', $date)->get();
+            //     // $places = Hall::findOrFail($id)->placesList;
+            //     return $sessions;
+            // } else {
+            //     throw new Exception('given date is not correct');
+            // }
+            // throwException('given date is not correct');
+
+            $sessions = Session::where('date', $validated)->get();
             // $places = Hall::findOrFail($id)->placesList;
             return $sessions;
         } catch (Exception $e) {
             // dd($e->getMessage());
             return $e->getMessage();
+            // return response()->json($e->getMessage(), 400);
+
         }
     }
 

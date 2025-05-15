@@ -12,7 +12,7 @@ final class OrderService
   {
     $order = Order::create([
       'is_paid' => false, 
-      'sum' => 100.00,
+      'sum' => 0.00,
     ]);
     // $order->setAttribute('is_paid', false); // без валидации
 

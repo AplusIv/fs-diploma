@@ -23,7 +23,6 @@ class PlaceFactory extends Factory
             'row' => 11,
             'place' => 10,
             'type' => "standart",
-            // 'is_free' => true,
             'is_selected' => false
         ];
     }

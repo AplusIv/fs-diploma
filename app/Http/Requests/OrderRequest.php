@@ -22,7 +22,8 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'is_paid' => ['boolean']
+            'sum' => ['required', 'decimal:0,2'],
+            'is_paid' => ['required','boolean']
         ];
     }
 }
