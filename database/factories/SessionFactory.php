@@ -21,7 +21,6 @@ class SessionFactory extends Factory
         return [
             'movie_id' => Movie::factory(),
             'hall_id' => Hall::factory(),
-            // 'date' => fake()->date('d.m.Y'),
             'date' => fake()->date('Y-m-d'),            
             'time' => fake()->time('H:i')
         ];

@@ -33,8 +33,6 @@ Route::apiResource('halls', HallController::class)->middleware(['auth:sanctum', 
 Route::apiResource('movies', MovieController::class)->middleware(['auth:sanctum', 'admin']);
 Route::apiResource('sessions', SessionController::class)->middleware(['auth:sanctum', 'admin']);
 Route::apiResource('places', PlaceController::class)->middleware(['auth:sanctum', 'admin']);
-// Route::apiResource('tickets', TicketController::class)->middleware('auth:sanctum');
-// Route::apiResource('orders', OrderController::class)->middleware('auth:sanctum');
 
 // отдельные пути
 Route::middleware('auth:sanctum')->get('/halls/{hall}/places', [HallController::class, 'getPlacesByHall']);

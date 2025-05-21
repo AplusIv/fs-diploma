@@ -13,25 +13,10 @@ class Place extends Model
         'hall_id', 'row', 'place', 'type', 'is_selected'
     ];
 
-    // С учётом связи с сеансами
-    // protected $fillable = [
-    //     'hall_id', 'session_id', 'row', 'place', 'type', 'is_free', 'is_selected'
-    // ];
-
-    // public function setIsFreeAttribute($value)
-    // {
-    //     $this->attributes['is_free'] = is_null($value) ? true : $value;
-    // }
-
     public function hall()
     {
         return $this->belongsTo(Hall::class);
     }
-
-    // public function session()
-    // {
-    //     return $this->belongsTo(Session::class);
-    // }
 
     public function ticket() // Не всегда есть билет на место...
     {

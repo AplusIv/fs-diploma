@@ -25,7 +25,6 @@ class TicketRequest extends FormRequest
         return [
             '*.place_id' => ['required', 'integer'], // *. валидация элемента массива
             '*.session_id' => ['required', 'integer'], // валидация элемента массива
-            // order_id
             '*.status' => ['required', Rule::in(['not_selected', 'booked', 'paid'])], // валидация элемента массива
         ];
     }

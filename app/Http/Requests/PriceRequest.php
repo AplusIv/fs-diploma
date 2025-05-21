@@ -24,9 +24,6 @@ class PriceRequest extends FormRequest
         return [
             'normal_price' => ['nullable', 'decimal:2'],
             'vip_price' => ['nullable', 'decimal:2'],
-            // 'normal_price' => ['nullable', 'integer'],
-            // 'vip_price' => ['nullable', 'integer'],
-            
         ];
     }
 }

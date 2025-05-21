@@ -11,8 +11,6 @@ class TicketService
   {
     foreach ($ticketsData as $ticketData) {
       $ticket = Ticket::create($ticketData);
-      // return $order;
-      // $ticket->setAttribute('order_id', $id);
 
       // Назначение id заказа билетам
       $ticket->order_id = $id;
@@ -32,7 +30,6 @@ class TicketService
       // $places = Hall::findOrFail($id)->placesList;
       return $tickets;
     } catch (Exception $e) {
-      // dd($e->getMessage());
       return $e->getMessage();
     }
   }
@@ -45,10 +42,6 @@ class TicketService
       $tickets = $this->getTicketsByOrder($id);
 
       foreach ($tickets as $ticket) {
-        // $ticket = Ticket::create($ticketData);
-        // return $order;
-        // $ticket->setAttribute('order_id', $id);
-
         // Назначение id заказа билетам
         $ticket->status = 'paid';
         $ticket->save();
@@ -78,7 +71,6 @@ class TicketService
         return $sum + $currentPrice;
       }, 0);
       
-      // return $totalSum;
       return round($totalSum, 2);
     } catch (Exception $e) {
       return $e->getMessage();

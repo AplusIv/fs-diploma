@@ -17,10 +17,10 @@ class DataSeeder extends Seeder
      */
     public function run(): void
     {
-        // Hall::truncate(); // удалить предыдущие записи перед созданием новых
-        // Movie::truncate(); // удалить предыдущие записи перед созданием новых
-        // Place::truncate(); // удалить предыдущие записи перед созданием новых
-        // Session::truncate(); // удалить предыдущие записи перед созданием новых
+        Hall::truncate(); // удалить предыдущие записи перед созданием новых
+        Movie::truncate(); // удалить предыдущие записи перед созданием новых
+        Place::truncate(); // удалить предыдущие записи перед созданием новых
+        Session::truncate(); // удалить предыдущие записи перед созданием новых
 
         /* 
         Создать изначально: 
@@ -136,6 +136,5 @@ class DataSeeder extends Seeder
                 ->for($movie1)
                 ->create();
         }
-        // Session::factory()->count(4)->for($hall)->for($movie)->create();
     }
 }

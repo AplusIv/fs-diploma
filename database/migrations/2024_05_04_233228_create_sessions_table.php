@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('hall_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->date('date');            
             $table->time('time');
-            // $table->timeTz('time');
             $table->timestamps();
         });
     }

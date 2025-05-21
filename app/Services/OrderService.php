@@ -32,20 +32,14 @@ final class OrderService
       $order->save();
 
       return $order;
-    }, 3);
-    
-    // $order = $this->create();
-    // $this->ticketService->create($ticketsData, $order->id);
+    }, 3);    
   }
 
   public function update(array $orderData, Order $order) 
   {
     DB::transaction(function() use ($orderData, $order) {
-      // $order = Order::findOrFail($id);
-      // $order->update(['sum' => '200.00']);
       $order->update($orderData);
       $this->ticketService->updateTicketsByOrder($order->id);
-      // return response()->json("Order with id: $order->id updated", 200);
     }, 3);
   }
 }

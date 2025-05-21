@@ -24,10 +24,8 @@ class SessionRequest extends FormRequest
     {
         // $today = date('Y-m-d');
         return [
-            // подумать над валидацией даты и времени
             // 'date'=> ['required', 'date_format:Y-m-d', "after_or_equal:{$today}"],
             'date'=> ['required', 'date_format:Y-m-d'],
-            // 'date'=> ['required', 'date_format:d.m.Y'],
             'time'=> ['required', 'date_format:H:i'],
             'hall_id' => ['required', 'integer'],
             'movie_id' => ['required', 'integer'],

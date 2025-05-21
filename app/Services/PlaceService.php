@@ -50,35 +50,24 @@ class PlaceService
   public function updatePlacesByHallId(array $placesData, int $id) 
   {
     try {
-      // $places = Place::where('hall_id', $id)->get(); // коллекция
       $data = [];
       foreach ($placesData as $placeData) {
         $placeObj = (object) $placeData; // каст в объект, так как изначально placeData массив
 
         // $place = $places->where('id', $placeData->id)->firstOrFail();
         // $place = $places->firstWhere('id', $placeData->id);
-
         // рабочий вариант
         // $place = Place::findOrFail($placeObj->id);
 
         $place = Place::firstWhere(['hall_id'=> $placeObj->hall_id, 'place'=> $placeObj->place, 'row'=> $placeObj->row]); // найти в БД место с таким же расположением из запроса
-        // $place = Place::firstWhere([
-        //   ['hall_id', $placeObj->hall_id], 
-        //   ['place', $placeObj->place], 
-        //   ['row', $placeObj->row],
-        // ]); // найти в БД место с таким же расположением
 
         if ($place->type !== $placeObj->type) {
           $place->update(['type' => $placeObj->type]);
-          // $place->type = $placeData->type;
-          // $place->save();
-          // $place->save();
           array_push($data, $place); // добавление обновленных данных в массив для передачи в ответ на запрос
         }
       }
       return $data;
     } catch (Exception $e) {
-      // dd($e->getMessage());
       return $e->getMessage();
     }
   }

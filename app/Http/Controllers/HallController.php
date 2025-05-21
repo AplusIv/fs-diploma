@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\HallRequest;
-use App\Http\Requests\PlaceRequest;
 use App\Http\Requests\PlacesArrayRequest;
 use App\Http\Requests\PriceRequest;
 use App\Models\Hall;
 use App\Models\Place;
 use App\Services\PlaceService;
 use Exception;
-use Illuminate\Http\Request;
 
 
 class HallController extends Controller
@@ -22,9 +20,6 @@ class HallController extends Controller
      */
     public function index()
     {
-        //
-        $halls = Hall::all();
-        // return view('halls.index', compact('halls'));
         return Hall::all();
     }
 
@@ -33,8 +28,6 @@ class HallController extends Controller
      */
     public function create()
     {
-        //
-        // return view('halls.create');
     }
 
     /**
@@ -42,19 +35,9 @@ class HallController extends Controller
      */
     public function store(HallRequest $request)
     {
-        // return Hall::created($request->validated()); // уточнить created
         $hall = Hall::create($request->validated());
-        // return $hall->with('success', 'Hall created successfully.');
-
-        // Создание и добавление мест для нового зала
         $placesData = $this->placeService->store($hall);
-
-        // return response()->json($hall, 201);
         return response()->json(['new hall' => $hall, 'new places' => $placesData], 201);
-
-
-        
-        // return redirect()->route('halls.index')->with('success','Hall created successfully.');
     }
 
     public function storePlaces(Hall $hall)
@@ -68,9 +51,6 @@ class HallController extends Controller
      */
     public function show($id)
     {
-        // $hall = Hall::find($id);
-        // return view('halls.show', compact('hall'));
-        // return Hall::findOrFail($id);
         try {
             $hall = Hall::findOrFail($id);
             return $hall;
@@ -86,9 +66,6 @@ class HallController extends Controller
 
      public function getPlacesByHall($id)
      {
-         // $hall = Hall::find($id);
-         // return view('halls.show', compact('hall'));
-         // return Hall::findOrFail($id);
          try {
              $places = Hall::findOrFail($id)->placesList;
              return $places;
@@ -97,15 +74,9 @@ class HallController extends Controller
              return $e->getMessage();
          }
      }
- 
-
-
 
     public function edit($id)
     {
-        //
-        // $hall = Hall::find($id);
-        // return view('halls.edit', compact('hall'));
     }
 
     /**
@@ -114,11 +85,8 @@ class HallController extends Controller
     public function update(HallRequest $request, Hall $hall)
     {
         $hall->fill($request->validated());
-        // return $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
-
         $hall->save();
         return response()->json("Hall with id: $hall->id updated", 200);
-        // return redirect()->route('halls.index')->with('success','Hall updated successfully.');
     }
     /**
      * Обновление типа мест в конкретном зале
@@ -126,30 +94,18 @@ class HallController extends Controller
     public function updateHallPlaces(PlacesArrayRequest $request, int $id) 
     {
         $responseData = $this->placeService->updatePlacesByHallId($request->validated(), $id);
-        // return response()->json("Places with hall_id: $id updated", 200);
         return response()->json(['updated places' => $responseData], 200);
-
     }
 
     public function editPrice($id)
     {
-        //
+        // метод не используется
         $hall = Hall::find($id);
         return view('halls.editPrice', compact('hall'));
     }
     public function updatePriceForPlace(PriceRequest $request, $id)
     {
-        // $validated = $request->safe()->only(['normal_price', 'vip_price']);
-        // $hall->fill($validated);
-        // $hall->fill($request->validated());
-        // $validated = $request->only(['normal_price', 'vip_price']);
-        // $newPrice = $validated->normal_price;
-        // $hall = Hall::find($id);
-        // $hall->normal_price = $request->normal_price;
-        // $hall->vip_price = $request->vip_price;
-        // $hall->update($request->all());
-        // $hall->save();
-
+        // метод не используется
         $hall = Hall::find($id);
         $hall->fill($request->validated());
         $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
@@ -164,26 +120,12 @@ class HallController extends Controller
             } else null;
             $place->save();
         }
-
-        // $hall = Hall::find($id);
-        // $validated = $request->validated();
-        // // $validated = $request->safe()->only(['normal_price', 'vip_price']);
-        // $newNormalPrice = $validated['normal_price'];
-        // $newVipPrice = $validated['vip_price'];
-        // $hall->normal_price = $newNormalPrice;
-        // $hall->vip_price = $newVipPrice;
-        // $hall->save();
         return redirect()->route('halls.index')->with('success', 'prices for hall updated successfully.');
-
-        // $place->fill($request->validated());
-        // // return $hall->save(); // вернёт либо истину, либо ложь при попытке обновить значения
-
-        // $place->save();
-        // return redirect()->route('places.index')->with('success','place updated successfully.');
     }
 
     public function deletePlaces(Hall $hall)
     {
+        // метод не используется
         $count = $this->placeService->deletePlacesOfHall($hall);
         return response()->json(['deleted places count' => $count], 204);        
     }
@@ -193,12 +135,8 @@ class HallController extends Controller
      */
     public function destroy(Hall $hall)
     {
-        // проверка возможности удаления
         if ($hall->delete()) {
             return response()->json(null, 204);
-            // return response(null, 404);
-            // return response()->json(null, 204);
-            // return redirect()->route('halls.index')->with('success','Hall deleted successfully.');
         }
         return null; // если запись не найдена
     }

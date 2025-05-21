@@ -19,7 +19,6 @@ class PlaceFactory extends Factory
     {
         return [
             'hall_id' => Hall::factory(),
-            // 'session_id' => 1, // Переделать
             'row' => 11,
             'place' => 10,
             'type' => "standart",
