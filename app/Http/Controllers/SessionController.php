@@ -50,6 +50,9 @@ class SessionController extends Controller
      */
     public function edit($id) {}
 
+    /**
+     * Display list of sessions with given date.
+     */
     public function getSessionsByDate(Request $request)
     {
         try {
@@ -74,6 +77,30 @@ class SessionController extends Controller
     }
 
     /**
+     * Toggle "is_sales_active" field for all specified resource.
+     */
+    public function toggleActiveSales(Session $session)
+    {
+        try {
+            // новые сеансы создаются с is_sales_active === false, поэтому могут быть разные статусы сеансов
+            $inactiveSessions = Session::all()->where('is_sales_active', operator: false);
+            $activeSessions = Session::all()->where('is_sales_active', operator: true);
+
+            // if ($activeSessions->isEmpty()) {
+            // Если большинство сеансов с неактивным статусом покупки -> активировать
+            if (count($inactiveSessions) > count($activeSessions)) {
+                $inactiveSessions->toQuery()->update(['is_sales_active' => true]);
+                return response()->json("Sessions are active now", 200);
+            } else {
+                $activeSessions->toQuery()->update(['is_sales_active' => false]);
+                return response()->json("Sessions are inactive now", 200);
+            }
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(SessionRequest $request, Session $session)
@@ -82,7 +109,6 @@ class SessionController extends Controller
         $session->save();
         return response()->json("Session with id: $session->id updated", 200);
     }
-
     /**
      * Remove the specified resource from storage.
      */

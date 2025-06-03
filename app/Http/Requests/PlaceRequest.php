@@ -28,7 +28,7 @@ class PlaceRequest extends FormRequest
             'row' => ['required', 'integer'],
             'place' => ['required', 'integer'],
             'type' => ['required', Rule::in(['vip', 'standart', 'disabled'])],
-            'is_selected' => ['required', 'boolean'], // уточнить итоговую необходимость
+            'is_selected' => ['required', 'boolean'],
         ];
     }
 }

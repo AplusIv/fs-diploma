@@ -129,7 +129,7 @@ class DataSeeder extends Seeder
                     ],
                     [
                         'date' => date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") + $i, date("Y"))),
-                        'time' => '22:30',
+                        'time' => '21:45',
                     ]
                 ))
                 ->for($hall1)

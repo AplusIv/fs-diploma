@@ -10,7 +10,7 @@ class Session extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date', 'time', 'movie_id', 'hall_id' 
+        'date', 'time', 'movie_id', 'hall_id', 'is_sales_active' 
     ];
 
     public function movie()

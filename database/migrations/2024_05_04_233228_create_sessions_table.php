@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('hall_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->date('date');            
             $table->time('time');
+            $table->boolean('is_sales_active')->default(false); // открыть/закрыть продажу билетов на сеансы
             $table->timestamps();
         });
     }

@@ -56,6 +56,15 @@ return [
             'throw' => false,
         ],
 
+        // директория в public диске для хранения картинок к фильмам
+        'posters' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/posters'),
+            'url' => env('APP_URL').'/storage/posters',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
     ],
 
     /*
