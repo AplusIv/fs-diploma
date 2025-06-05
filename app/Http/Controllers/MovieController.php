@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MovieRequest;
+use App\Http\Requests\MovieUpdateRequest;
 use App\Models\Movie;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class MovieController extends Controller
 {
@@ -19,17 +21,30 @@ class MovieController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(MovieRequest $request)
     {
-        $movie = Movie::create($request->validated());
-        return response()->json($movie, 201);
+        try {
+            $data  = $request->validated();
+            $movie = Movie::create($data);
+
+            if ($request->hasFile('poster')) {
+                $path = $request->file('poster')->store('', 'posters');
+                $url = Storage::url('posters/' . $path);
+                $movie->poster = $url;
+            } else{
+                $movie->poster = "poster is not uploaded";
+            }
+
+            $movie->save();
+            return response()->json($movie, 201);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -49,18 +64,28 @@ class MovieController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
-    {
-    }
+    public function edit($id) {}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(MovieRequest $request, Movie $movie)
+    public function update(MovieUpdateRequest $request, Movie $movie)
     {
-        $movie->fill($request->validated());
-        $movie->save(); // вернёт либо истину, либо ложь при попытке обновить значения
-        return response()->json("Movie with id: $movie->id updated", 200);
+        try {
+            $data  = $request->validated();
+            $movie->fill($data);
+
+            if ($request->hasFile('poster')) {
+                $path = $request->file('poster')->store('', 'posters');
+                $url = Storage::url('posters/' . $path);
+                $movie->poster = $url;
+            } 
+
+            $movie->save();
+            return response()->json("Movie with id: $movie->id updated", 200);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**

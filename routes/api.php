@@ -39,17 +39,16 @@ Route::apiResource('sessions', SessionController::class)->middleware(['auth:sanc
 Route::apiResource('places', PlaceController::class)->middleware(['auth:sanctum', 'admin']);
 
 // отдельные пути
-Route::middleware('auth:sanctum')->get('/halls/{hall}/places', [HallController::class, 'getPlacesByHall']);
+Route::middleware(['auth:sanctum', 'admin'])->get('/halls/{hall}/places', [HallController::class, 'getPlacesByHall']);
 
 // создание и заполнение новых мест в зале
-Route::middleware('auth:sanctum')->post('/halls/{hall}/places', [HallController::class, 'storePlaces']);
+Route::middleware(['auth:sanctum', 'admin'])->post('/halls/{hall}/places', [HallController::class, 'storePlaces']);
 
 // удаление всех мест в зале
-Route::middleware('auth:sanctum')->delete('/halls/{hall}/places', [HallController::class, 'deletePlaces']);
-
+Route::middleware(['auth:sanctum', 'admin'])->delete('/halls/{hall}/places', [HallController::class, 'deletePlaces']);
 
 // обновление типа мест для зала
-Route::middleware('auth:sanctum')->put('/halls/{hall}/places', [HallController::class, 'updateHallPlaces']);
+Route::middleware(['auth:sanctum', 'admin'])->put('/halls/{hall}/places', [HallController::class, 'updateHallPlaces']);
 
 // открыть/закрыть покупку билетов, изменить столбец is_sales_active
 Route::middleware(['auth:sanctum', 'admin'])->put('/sessions/sales/is_active', [SessionController::class, 'toggleActiveSales']);

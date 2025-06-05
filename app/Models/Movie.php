@@ -10,7 +10,7 @@ class Movie extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'duration', 'country'
+        'title', 'description', 'duration', 'country', 'poster'
     ];
 
     public function sessions()

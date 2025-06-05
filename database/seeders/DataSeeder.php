@@ -9,6 +9,7 @@ use App\Models\Session;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DataSeeder extends Seeder
 {
@@ -26,7 +27,7 @@ class DataSeeder extends Seeder
         Создать изначально: 
          - 3 зала, 
          - 4 фильма,
-         - 3 конфигурации мест, из которых заполнить ммодель мест
+         - 3 конфигурации мест, из которых заполнить модель мест
          - 2 сеанса, на каждый фильм в день (на 2 недели начиная с сегодняшнего дня). Залы выбрать вручную.         
         */
 
@@ -41,6 +42,17 @@ class DataSeeder extends Seeder
         $movie2 = Movie::factory()->create();
         $movie3 = Movie::factory()->create();
         $movie4 = Movie::factory()->create();
+        $movies = [$movie1, $movie2, $movie3, $movie4];
+
+        // директория с постерами к фильмам
+        $files = Storage::disk('posters')->files();
+
+        // обновить рандомные (могут повторяться) постеры, заданные в фабрике, индивидуальными
+        for ($i = 0; $i < count($movies); $i++) {
+            $movies[$i]->update([
+                'poster' => Storage::url('posters/' . $files[$i]),
+            ]);
+        }
 
         // 3)
         $halls = [$hall1, $hall2, $hall3];
@@ -118,7 +130,7 @@ class DataSeeder extends Seeder
                 ->for($hall3)
                 ->for($movie4)
                 ->create();
-            
+
             // 
             Session::factory()
                 ->count(2)

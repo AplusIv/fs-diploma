@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('duration'); // возможно нужно выбрать временной тип
             $table->string('country');
+            $table->string('poster'); // url постера к фильму
             $table->timestamps();
         });
     }
