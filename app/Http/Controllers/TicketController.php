@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TicketRequest;
 use App\Models\Place;
-use App\Models\Session;
+// use App\Models\Session;
 use App\Models\Ticket;
 use Exception;
 
@@ -15,39 +15,44 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::all();
-        return $tickets;
+        try {
+            return Ticket::all();
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(TicketRequest $request)
     {
-        $placeId = $request->place_id;
-        $sessionId = $request->session_id;
+        try {
+            $placeId = $request->place_id;
+            // $sessionId = $request->session_id;
 
-        $place = Place::findOrFail($placeId);
-        $session = Session::findOrFail($sessionId); // добавить проверку даты
+            $place = Place::findOrFail($placeId);
+            // $session = Session::findOrFail($sessionId); // добавить проверку даты
 
-        if ($place->type !== 'disabled') {
-            $ticket = Ticket::create($request->validated());
-            
-            // поменять тип места, чтобы было не выбрать повторно
-            // $place->type = 'disabled';
-            // $place->save();
+            if ($place->type !== 'disabled') {
+                $ticket = Ticket::create($request->validated());
 
-            return response()->json($ticket, 201);
-        } else {
-            throw new Exception("Cannot add ticket to this place", 1);            
-        }         
+                // поменять тип места, чтобы было не выбрать повторно
+                // $place->type = 'disabled';
+                // $place->save();
+
+                return response()->json($ticket, 201);
+            } else {
+                throw new Exception("Cannot add ticket to this place", 1);
+            }
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -59,17 +64,14 @@ class TicketController extends Controller
             $ticket = Ticket::findOrFail($id);
             return $ticket;
         } catch (Exception $e) {
-            // dd($e->getMessage());
-            return $e->getMessage();
+            return response($e->getMessage(), 400);
         }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
-    {
-    }
+    public function edit($id) {}
 
     public function getTicketsByOrderId($id)
     {
@@ -80,8 +82,7 @@ class TicketController extends Controller
             $tickets = Ticket::where('order_id', $id)->get();
             return $tickets;
         } catch (Exception $e) {
-            // dd($e->getMessage());
-            return $e->getMessage();
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -90,11 +91,15 @@ class TicketController extends Controller
      */
     public function update(TicketRequest $request, Ticket $ticket)
     {
-        $ticket->fill($request->validated());
+        try {
+            $ticket->fill($request->validated());
 
-        // вернёт либо истину, либо ложь при попытке обновить значения
-        $ticket->save();
-        return response()->json("Ticket with id: $ticket->id updated", 200);
+            // вернёт либо истину, либо ложь при попытке обновить значения
+            $ticket->save();
+            return response()->json("Ticket with id: $ticket->id updated", 200);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -102,9 +107,13 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        if ($ticket->delete()) {
-            return response()->json(null, 204);
+        try {
+            if ($ticket->delete()) {
+                return response()->json(null, 204);
+            }
+            return null; // если запись не найдена
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
         }
-        return null; // если запись не найдена
     }
 }

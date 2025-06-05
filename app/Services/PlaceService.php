@@ -13,7 +13,7 @@ class PlaceService
    * @param \App\Models\Hall $hall
    * @return array 
    */
-  public function store(Hall $hall) 
+  public function store(Hall $hall)
   {
     // создание мест для конкретного зала для добавления в БД
     $configuration = $hall->places * $hall->rows;
@@ -23,11 +23,11 @@ class PlaceService
 
     for ($i = 0; $i < $configuration; $i++) {
       $place = Place::create([
-        'hall_id'=> $hall->id,
-        'row'=> $r,
-        'place'=> $p,
-        'type'=> "standart",
-        'is_selected'=> false
+        'hall_id' => $hall->id,
+        'row' => $r,
+        'place' => $p,
+        'type' => "standart",
+        'is_selected' => false
       ]);
 
       array_push($placesData, $place);
@@ -47,19 +47,18 @@ class PlaceService
    * @param array $placesData
    * @return array|string
    */
-  public function updatePlacesByHallId(array $placesData, int $id) 
+  public function updatePlacesByHallId(array $placesData, int $id)
   {
     try {
       $data = [];
       foreach ($placesData as $placeData) {
         $placeObj = (object) $placeData; // каст в объект, так как изначально placeData массив
 
-        // $place = $places->where('id', $placeData->id)->firstOrFail();
-        // $place = $places->firstWhere('id', $placeData->id);
-        // рабочий вариант
-        // $place = Place::findOrFail($placeObj->id);
-
-        $place = Place::firstWhere(['hall_id'=> $placeObj->hall_id, 'place'=> $placeObj->place, 'row'=> $placeObj->row]); // найти в БД место с таким же расположением из запроса
+        $place = Place::firstWhere([
+          'hall_id' => $placeObj->hall_id, 
+          'place' => $placeObj->place, 
+          'row' => $placeObj->row
+        ]); // найти в БД место с таким же расположением из запроса
 
         if ($place->type !== $placeObj->type) {
           $place->update(['type' => $placeObj->type]);

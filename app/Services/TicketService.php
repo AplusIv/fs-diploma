@@ -9,14 +9,16 @@ class TicketService
 {
   public function create(array $ticketsData, int $id)
   {
-    foreach ($ticketsData as $ticketData) {
-      $ticket = Ticket::create($ticketData);
+    try {
+      foreach ($ticketsData as $ticketData) {
+        $ticket = Ticket::create($ticketData);
 
-      // Назначение id заказа билетам
-      $ticket->order_id = $id;
-      $ticket->save();
-      
-      // $ticket->setAttribute('is_paid', false); // без валидации
+        // Назначение id заказа билетам
+        $ticket->order_id = $id;
+        $ticket->save();
+      }
+    } catch (Exception $e) {
+      return $e->getMessage();
     }
   }
 
@@ -27,7 +29,6 @@ class TicketService
         throw new Exception("Order id is not a number", 404);
       }
       $tickets = Ticket::where('order_id', $id)->get();
-      // $places = Hall::findOrFail($id)->placesList;
       return $tickets;
     } catch (Exception $e) {
       return $e->getMessage();
@@ -36,7 +37,7 @@ class TicketService
 
   public function store() {}
 
-  public function updateTicketsByOrder(int $id) 
+  public function updateTicketsByOrder(int $id)
   {
     try {
       $tickets = $this->getTicketsByOrder($id);
@@ -48,16 +49,15 @@ class TicketService
       }
     } catch (Exception $e) {
       return $e->getMessage();
-    }    
+    }
   }
 
-  public function getOrderSum(int $id): float|int|string 
+  public function getOrderSum(int $id): float|int|string
   {
     try {
       $tickets = $this->getTicketsByOrder($id);
 
       $totalSum = $tickets->reduce(function ($sum, $currentTicket): float|int {
-        // $currentPrice;
         switch ($currentTicket->place->type) {
           case 'standart':
             $currentPrice = $currentTicket->place->hall->normal_price;
@@ -70,10 +70,10 @@ class TicketService
         }
         return $sum + $currentPrice;
       }, 0);
-      
+
       return round($totalSum, 2);
     } catch (Exception $e) {
       return $e->getMessage();
-    }    
+    }
   }
 }

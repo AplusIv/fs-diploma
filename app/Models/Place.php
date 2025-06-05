@@ -18,9 +18,8 @@ class Place extends Model
         return $this->belongsTo(Hall::class);
     }
 
-    public function ticket() // Не всегда есть билет на место...
+    public function ticket() 
     {
-        // return $this->belongsTo(Ticket::class);
         return $this->hasOne(Ticket::class);
     }
 }

@@ -17,24 +17,29 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-        return $orders;
+        try {
+            return Order::all();
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TicketRequest $request )
+    public function store(TicketRequest $request)
     {
-        $responseData = $this->orderService->store($request->validated());
-        return response()->json(['newOrder' => $responseData], 200);
+        try {
+            $responseData = $this->orderService->store($request->validated());
+            return response()->json(['newOrder' => $responseData], 200);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -47,24 +52,26 @@ class OrderController extends Controller
             return $order;
         } catch (Exception $e) {
             // dd($e->getMessage());
-            return $e->getMessage();
+            return response($e->getMessage(), 400);
         }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
-    {
-    }
+    public function edit($id) {}
 
     /**
      * Update the specified resource in storage.
      */
     public function update(OrderRequest $request, Order $order)
     {
-        $this->orderService->update($request->validated(), $order);
-        return response()->json("Order with id: $order->id updated", 200);
+        try {
+            $this->orderService->update($request->validated(), $order);
+            return response()->json("Order with id: $order->id updated", 200);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -72,9 +79,13 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        if ($order->delete()) {
-            return response()->json(null, 204);
+        try {
+            if ($order->delete()) {
+                return response()->json(null, 204);
+            }
+            return null; // если запись не найдена
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
         }
-        return null; // если запись не найдена
     }
 }

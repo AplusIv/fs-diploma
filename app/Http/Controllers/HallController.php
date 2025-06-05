@@ -20,30 +20,40 @@ class HallController extends Controller
      */
     public function index()
     {
-        return Hall::all();
+        try {
+            return Hall::all();
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(HallRequest $request)
     {
-        $hall = Hall::create($request->validated());
-        $placesData = $this->placeService->store($hall);
-        return response()->json(['new hall' => $hall, 'new places' => $placesData], 201);
+        try {
+            $hall = Hall::create($request->validated());
+            $placesData = $this->placeService->store($hall);
+            return response()->json(['new hall' => $hall, 'new places' => $placesData], 201);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     public function storePlaces(Hall $hall)
     {
-        $placesData = $this->placeService->store($hall);
-        return response()->json(['new places' => $placesData], 201);
+        try {
+            $placesData = $this->placeService->store($hall);
+            return response()->json(['new places' => $placesData], 201);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -55,8 +65,7 @@ class HallController extends Controller
             $hall = Hall::findOrFail($id);
             return $hall;
         } catch (Exception $e) {
-            // dd($e->getMessage());
-            return $e->getMessage();
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -64,39 +73,71 @@ class HallController extends Controller
      * Show the form for editing the specified resource.
      */
 
-     public function getPlacesByHall($id)
-     {
-         try {
-             $places = Hall::findOrFail($id)->placesList;
-             return $places;
-         } catch (Exception $e) {
-             // dd($e->getMessage());
-             return $e->getMessage();
-         }
-     }
-
-    public function edit($id)
+    public function getPlacesByHall($id)
     {
+        try {
+            $places = Hall::findOrFail($id)->placesList;
+            return $places;
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
+
+    public function edit($id) {}
 
     /**
      * Update the specified resource in storage.
      */
     public function update(HallRequest $request, Hall $hall)
     {
-        $hall->fill($request->validated());
-        $hall->save();
-        return response()->json("Hall with id: $hall->id updated", 200);
+        try {
+            $hall->fill($request->validated());
+            $hall->save();
+            return response()->json("Hall with id: $hall->id updated", 200);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
     /**
      * Обновление типа мест в конкретном зале
      */
-    public function updateHallPlaces(PlacesArrayRequest $request, int $id) 
+    public function updateHallPlaces(PlacesArrayRequest $request, int $id)
     {
-        $responseData = $this->placeService->updatePlacesByHallId($request->validated(), $id);
-        return response()->json(['updated places' => $responseData], 200);
+        try {
+            $responseData = $this->placeService->updatePlacesByHallId($request->validated(), $id);
+            return response()->json(['updated places' => $responseData], 200);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
+    public function deletePlaces(Hall $hall)
+    {
+        try {
+            $count = $this->placeService->deletePlacesOfHall($hall);
+            return response()->json(['deleted places count' => $count], 204);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Hall $hall)
+    {
+        try {
+            if ($hall->delete()) {
+                return response()->json(null, 204);
+            }
+            return null; // если запись не найдена
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
+    }
+
+
+    // следующие 2 метода не испльзуются
     public function editPrice($id)
     {
         // метод не используется
@@ -121,23 +162,5 @@ class HallController extends Controller
             $place->save();
         }
         return redirect()->route('halls.index')->with('success', 'prices for hall updated successfully.');
-    }
-
-    public function deletePlaces(Hall $hall)
-    {
-        // метод не используется
-        $count = $this->placeService->deletePlacesOfHall($hall);
-        return response()->json(['deleted places count' => $count], 204);        
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Hall $hall)
-    {
-        if ($hall->delete()) {
-            return response()->json(null, 204);
-        }
-        return null; // если запись не найдена
     }
 }

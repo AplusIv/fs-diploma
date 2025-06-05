@@ -15,7 +15,11 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return Movie::all();
+        try {
+            return Movie::all();
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -36,7 +40,7 @@ class MovieController extends Controller
                 $path = $request->file('poster')->store('', 'posters');
                 $url = Storage::url('posters/' . $path);
                 $movie->poster = $url;
-            } else{
+            } else {
                 $movie->poster = "poster is not uploaded";
             }
 
@@ -56,8 +60,7 @@ class MovieController extends Controller
             $movie = Movie::findOrFail($id);
             return $movie;
         } catch (Exception $e) {
-            // dd($e->getMessage());
-            return $e->getMessage();
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -79,7 +82,7 @@ class MovieController extends Controller
                 $path = $request->file('poster')->store('', 'posters');
                 $url = Storage::url('posters/' . $path);
                 $movie->poster = $url;
-            } 
+            }
 
             $movie->save();
             return response()->json("Movie with id: $movie->id updated", 200);
@@ -93,9 +96,13 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie)
     {
-        if ($movie->delete()) {
-            return response()->json(null, 204);
+        try {
+            if ($movie->delete()) {
+                return response()->json(null, 204);
+            }
+            return null;
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
         }
-        return null;
     }
 }

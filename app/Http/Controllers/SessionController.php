@@ -15,7 +15,11 @@ class SessionController extends Controller
      */
     public function index()
     {
-        return Session::all();
+        try {
+            return Session::all();
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -28,8 +32,12 @@ class SessionController extends Controller
      */
     public function store(SessionRequest $request)
     {
-        $session = Session::create($request->validated());
-        return response()->json($session, 201);
+        try {
+            $session = Session::create($request->validated());
+            return response()->json($session, 201);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -41,7 +49,7 @@ class SessionController extends Controller
             $session = Session::findOrFail($id);
             return $session;
         } catch (Exception $e) {
-            return $e->getMessage();
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -72,7 +80,7 @@ class SessionController extends Controller
             $sessions = Session::where('date', $validated)->get();
             return $sessions;
         } catch (Exception $e) {
-            return $e->getMessage();
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -105,18 +113,26 @@ class SessionController extends Controller
      */
     public function update(SessionRequest $request, Session $session)
     {
-        $session->fill($request->validated());
-        $session->save();
-        return response()->json("Session with id: $session->id updated", 200);
+        try {
+            $session->fill($request->validated());
+            $session->save();
+            return response()->json("Session with id: $session->id updated", 200);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Session $session)
     {
-        if ($session->delete()) {
-            return response()->json(null, 204);
+        try {
+            if ($session->delete()) {
+                return response()->json(null, 204);
+            }
+            return null; // если запись не найдена
+        } catch (Exception $e) {
+            return response($e->getMessage(), 400);
         }
-        return null; // если запись не найдена
     }
 }
