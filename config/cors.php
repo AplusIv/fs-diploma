@@ -15,12 +15,14 @@ return [
     |
     */
 
+    // 'paths' => ['login', 'logout', 'sanctum/csrf-cookie'], // add login/logout paths
     'paths' => ['api/*', 'login', 'logout', 'sanctum/csrf-cookie'], // add login/logout paths
+
 
     'allowed_methods' => ['*'],
 
     // 'allowed_origins' => ['*'],
-    'allowed_origins' => [env('FRONTEND_URL', '*')],
+    'allowed_origins' => [env('FRONTEND_URL', '*')], // before guthub pages 
 
     'allowed_origins_patterns' => [],
 

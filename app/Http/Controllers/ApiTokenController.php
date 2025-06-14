@@ -34,7 +34,17 @@ class ApiTokenController extends Controller
 
         // return ['token' => $token->plainTextToken];
         $token = $user->createToken("API TOKEN")->plainTextToken;
-        return ['token' => $token];
+        // return ['token' => $token];
+        return response()->json(['token' => $token], 200);
     }
 
+    public function deleteToken(Request $request)
+    {
+        if (!$request->user()) {
+            return response()->json(['err' => 'current user not found', 'user' => $request->user()], 401);
+        }
+        // Отозвать токен, который использовался для аутентификации текущего запроса...
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(null, 204);
+    }
 }

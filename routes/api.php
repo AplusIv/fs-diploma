@@ -23,11 +23,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// методы createToken, deleteToken контроллера ApiTokenController для аутентификации пользователя
+Route::post('/createToken', [ApiTokenController::class, 'createToken']);
+Route::middleware('auth:sanctum')->post('/logout', [ApiTokenController::class, 'deleteToken']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     // return $request->user();
         // return Auth::user();
     return response($request->user(), 200);
-
 });
 
 
